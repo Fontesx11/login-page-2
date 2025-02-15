@@ -23,5 +23,5 @@ app.get('/', async (_, res) => {
 
 
 app.listen(3003, () => {
-  console.log(`Listening to http://localhost:${3003}`);
+  console.log(`Listening to https://login-page-2-mngg.onrender.com:${3003}`);
 });
