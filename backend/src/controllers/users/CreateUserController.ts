@@ -15,7 +15,13 @@ class CreateUserController {
       password
     });
 
-    res.json(user)
+    if("status" in user){
+      res.status(user.status).json({ message: user.message });
+      return;
+    }
+
+    res.json(user);
+    return;
   }
 }
 

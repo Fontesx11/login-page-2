@@ -17,13 +17,13 @@ class AuthUserService {
     })
 
     if(!user){
-      throw new Error("Email or Password incorrect")
+     return { status:401, message:"User or password incorrect"}
     }
 
     const passwordMatch = await compare(password, user.password)
 
     if(!passwordMatch){
-      throw new Error("Email or Password incorrect")
+      return { status:401, message:"User or password incorrect"}
     }
 
     const token = sign(

@@ -11,7 +11,7 @@ class CreateUserService {
   async execute({name, email, password}: UserRequest){
 
     if(!email){
-      throw new Error("Email does not exists");
+      return {status: 400, message: "Missing  Information"}
     }
 
     const userAlredyExits = await prismaClient.user.findFirst({
@@ -21,7 +21,7 @@ class CreateUserService {
     })
 
     if(userAlredyExits){
-      throw new Error("User alredy exists");
+      return {status: 409, message: "User alredy exists"}
     }
 
     const passwordHash = await hash(password, 8)

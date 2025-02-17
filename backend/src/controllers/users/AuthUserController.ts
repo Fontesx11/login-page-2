@@ -9,12 +9,18 @@ class AuthUserController {
 
     const authUserService = new AuthUserService();
 
-    const user = await authUserService.execute({
+    const auth = await authUserService.execute({
       name,
       password
     });
 
-    res.json(user)
+    if("status" in auth){
+      res.status(auth.status).json({ message: auth.message });
+      return;
+    }
+
+    res.json(auth);
+    return;
   }
 }
 
