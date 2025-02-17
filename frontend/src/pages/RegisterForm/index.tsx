@@ -4,7 +4,9 @@ import './styles.css'
 import { InputBox } from '../../components/InputBox';
 import { RegisterLink } from '../../components/RegisterLInk';
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import backendAPI from "../../services/api";
+
 
 
 export const RegisterForm = () => {
@@ -25,7 +27,7 @@ export const RegisterForm = () => {
     }
 
     try{
-      axios.post('https://login-page-2-mngg.onrender.com/users', payload).then((res) =>{
+      axios.post(`${backendAPI.defaults.baseURL}/users`, payload).then((res) =>{
         console.log(res)
       })
     } catch(e){
