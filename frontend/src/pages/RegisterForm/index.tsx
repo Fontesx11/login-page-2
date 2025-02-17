@@ -18,6 +18,11 @@ export const RegisterForm = () => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) =>{
 
+    if(password !== passwordConfirm){
+      alert("As senhas não correspondem")
+      return;
+    }
+
     e.preventDefault();
 
     const payload = {
