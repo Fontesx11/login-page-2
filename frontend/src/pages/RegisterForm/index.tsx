@@ -5,7 +5,13 @@ import { InputBox } from '../../components/InputBox';
 import { RegisterLink } from '../../components/RegisterLInk';
 import axios from "axios";
 import { useState } from "react";
+import { Ring } from 'ldrs/react'
+import 'ldrs/react/Ring.css'
 import backendAPI from "../../services/api";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useNavigate } from "react-router-dom";
+
 
 
 
@@ -14,9 +20,12 @@ export const RegisterForm = () => {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [passwordConfirm, setPasswordConfirm] = useState('')
+  const [passwordConfirm, setPasswordConfirm] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) =>{
+  const navigate = useNavigate(); 
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) =>{
 
     if(password !== passwordConfirm){
       alert("As senhas não correspondem")
@@ -32,14 +41,33 @@ export const RegisterForm = () => {
     }
 
     try{
-      axios.post(`${backendAPI.defaults.baseURL}/users`, payload).then((res) =>{
-        console.log(res)
-      })
+    setIsLoading(true);
+    const res = await axios.post(`${backendAPI.defaults.baseURL}/users`, payload);
+
+    if (res.status === 200) {
+      showSuccessToast();
+      navigate("/");
+    }
+
     } catch(e){
       console.log(e)
+    } finally {
+      setIsLoading(false);
     }
     
   } 
+
+  const showSuccessToast = () => {
+    toast.success("Registrado com sucesso!", {
+      position: "top-right",
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      theme: "light",
+    });
+  };
 
   return (
     <div className='wrapper'>
@@ -51,7 +79,17 @@ export const RegisterForm = () => {
         <InputBox type='password' placeholder='Password' icon={FaLock} onChange={(e)=> setPassword(e.target.value)}/>
         <InputBox type='password' placeholder='Confirm password' icon={FaLock} onChange={(e)=> setPasswordConfirm(e.target.value)}/>
 
-        <button type="submit">Sign in</button>
+        <button type="submit">
+          {isLoading ? (
+            <Ring
+              size="30"
+              stroke="5"
+              bgOpacity="0"
+              speed="2"
+              color="grey" 
+            /> 
+          ) : "Sign In"}
+        </button>
         <RegisterLink text='You alredy have an account?' linkText='Login' to='/'/>
       </form>
     </div>
