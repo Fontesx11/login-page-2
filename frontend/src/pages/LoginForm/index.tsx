@@ -6,7 +6,7 @@ import { RegisterLink } from "../../components/RegisterLInk";
 import { useState } from "react";
 import axios from "axios";
 import backendAPI from "../../services/api";
-
+import { useNavigate } from "react-router-dom";
 
 
 export const LoginForm = () => {
@@ -14,7 +14,7 @@ export const LoginForm = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const  handleSubmitLogin = async (e: React.FormEvent<HTMLFormElement>) => {
 
@@ -27,17 +27,18 @@ export const LoginForm = () => {
 
     try{
      const response = await axios.post(`${backendAPI.defaults.baseURL}/login`, payload)
+
+     console.log(response)
      
      if(response.status === 200){
         localStorage.setItem('token', response.data.token);
+        navigate("/profile")
      } 
 
     } catch(e){
       alert("Error ao logar")
       console.log(e)
     }
-
-    
   }
 
   return (
